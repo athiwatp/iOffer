@@ -3,10 +3,46 @@
 <html>
     <head>
         <title>iOffer</title>
-        <link rel='stylesheet' href='/test.css' />
     </head>
     <body>
         <h1>Welcome to iOffer</h1>
+        <form action='javascript:search()'>
+            <input id='query' placeholder='Search for Coffee'
+                autofocus >
+            <button type='submit'>Search</button>
+        </form>
+        <ol id='coffees'>
+        </ol>
         
-    </body>  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+        <script>
+            var coffees = [ ]
+            
+            function search() {
+                var s = $('#query').val()
+                $('ol#coffees').html('')
+                for (var i = 0; i < coffees.length; i++) {
+                    if (coffees[i].name == s) {
+                        $('ol#coffees').append(
+                            `<li>${coffees[i].name} - ${coffees[i].price}</li>`
+                         )
+                    }
+                }
+            }
+            
+            function main() {
+                $.get("/list").success(process)
+            }
+            
+            function process(data) {
+                coffees = data
+                for (var i = 0; i < data.length; i++) {
+                    $('ol#coffees').append(
+                        `<li>${data[i].name} - ${data[i].price}</li>`)
+                }
+            }
+            
+            $(main)
+        </script>
+    </body>
 </html>
