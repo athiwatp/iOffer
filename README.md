@@ -6,7 +6,7 @@ Issue the following commands:
 ```
 $ git clone https://github.com/codestar-work/iOffer.git
 $ cd iOffer
-$ npm install express
+$ npm install express ejs
 $ sudo node app.js
 ```
 Don't forget to allow port TCP:2000 in your firewall.

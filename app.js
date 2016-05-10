@@ -1,11 +1,14 @@
 var express = require('express')
 var app     = express()
+
+app.use(express.static('public'))
+app.set('view engine', 'ejs')
 app.get("/", home)
 app.get('/list', list)
 app.listen(2000)
 
 function home(req, res) {
-  res.send("<i>Welcome to iOffer</i>")
+  res.render("index")
 }
 
 function list(req, res) {
