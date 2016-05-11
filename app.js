@@ -4,15 +4,20 @@ var app     = express()
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.get("/", home)
+app.get("/register", register)
 app.get('/list', list)
 app.listen(2000)
 
 function home(req, res) {
-  res.render("index")
+	res.render("index")
+}
+
+function register(req, res) {
+	res.render("register")
 }
 
 function list(req, res) {
-  res.send(coffees)
+	res.send(coffees)
 }
 
 var coffees = [
