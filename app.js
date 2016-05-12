@@ -1,6 +1,12 @@
+var crypto  = require('crypto')
 var express = require('express')
 var app     = express()
 var parser  = require('body-parser')
+var mongo   = require('mongodb').MongoClient
+
+function encrypt(s) {
+	return crypto.createHash('sha512').update(s).digest('hex')
+}
 
 app.use(express.static('public'))
 app.use(parser.urlencoded())
