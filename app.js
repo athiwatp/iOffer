@@ -14,6 +14,7 @@ app.post("/register", registerMember)
 app.get('/list', list)
 app.get('/list-user', listUser)
 app.get('/show-user', showUser)
+app.get('/profile', profile)
 app.listen(2000)
 
 function home(req, res) {
@@ -91,4 +92,8 @@ function showUser(req, res) {
 	} else {
 		res.render('show-user', {user: [] })
 	}
+}
+
+function profile(req, res) {
+	
 }
