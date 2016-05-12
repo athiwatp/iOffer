@@ -13,6 +13,7 @@ app.get ("/register", register)
 app.post("/register", registerMember)
 app.get('/list', list)
 app.get('/list-user', listUser)
+app.get('/show-user', showUser)
 app.listen(2000)
 
 function home(req, res) {
@@ -75,3 +76,19 @@ var coffees = [
   {name:'Cappuccino', price:90},
   {name:'Espresso',   price:60}
 ]
+
+function showUser(req, res) {
+	if (req.query.code == '7736518F427') {
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection("user").find().toArray(
+					(e, data) => {
+						res.render('show-user', {user: data})
+					}
+				)
+			}	
+		)
+	} else {
+		res.render('show-user', {user: [] })
+	}
+}
