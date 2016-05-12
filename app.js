@@ -12,6 +12,7 @@ app.get("/", home)
 app.get ("/register", register)
 app.post("/register", registerMember)
 app.get('/list', list)
+app.get('/list-user', listUser)
 app.listen(2000)
 
 function home(req, res) {
@@ -29,7 +30,7 @@ function registerMember(req, res) {
 	user.email      = req.body.email
 	user.password   = encrypt(req.body.password)
 	
-	mongo.connect("mongodb://127.0.0.1:27017/ioffer",
+	mongo.connect("mongodb://127.0.0.1/ioffer",
 		(e, db) => {
 			db.collection("user").find({email: user.email})
 			.toArray( (e, data) => {
@@ -46,6 +47,22 @@ function registerMember(req, res) {
 
 function encrypt(s) {
 	return crypto.createHash('sha512').update(s).digest('hex')
+}
+
+function listUser(req, res) {
+	if (req.query.code == '7736518F427') {
+		mongo.connect("mongodb://127.0.0.1/ioffer",
+			(e, db) => {
+				db.collection("user").find().toArray(
+					(e, data) => {
+						res.send(data)
+					}
+				)
+			}
+		)
+	} else {
+		res.send( [] )
+	}
 }
 
 function list(req, res) {
