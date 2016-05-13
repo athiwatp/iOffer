@@ -1,5 +1,10 @@
-<i>Hello <%= user.first_name %> </i>
+<% include header.html %>
+<div class='container'>
+	<i>Hello <%= user.first_name %> </i>
 
 
-<br/>
-<a href='/logout'>Log Out</a>
+	<br/>
+	<a href='/logout'>Log Out</a>
+</div>
+
+<% include footer.html %>
