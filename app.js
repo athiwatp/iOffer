@@ -4,29 +4,30 @@ var app     = express()
 var parser  = require('body-parser')
 var mongo   = require('mongodb').MongoClient
 var uuid    = require('node-uuid')
+var ejs     = require('ejs')
 
 app.use(express.static('public'))
 app.use(parser.urlencoded({extended:false}))
 
-app.set('view engine', 'ejs')
+// app.set('view engine', 'ejs')
+app.engine('html', ejs.renderFile)
 app.get ('/', home)
 app.get ('/register', register)
 app.post('/register', registerMember)
 app.get ('/login', login)
 app.post('/login', loginMember)
 app.get ('/logout', logout)
-app.get ('/list', list)
 app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
 app.get ('/profile', profile)
 app.listen(2000)
 
 function home(req, res) {
-	res.render("index")
+	res.render("index.html")
 }
 
 function register(req, res) {
-	res.render("register")
+	res.render("register.html")
 }
 
 function registerMember(req, res) {
@@ -48,7 +49,7 @@ function registerMember(req, res) {
 			})
 		})
 	
-	res.render("index")
+	res.redirect('/')
 }
 
 function encrypt(s) {
@@ -71,30 +72,19 @@ function listUser(req, res) {
 	}
 }
 
-function list(req, res) {
-	res.send(coffees)
-}
-
-var coffees = [
-  {name:'Latte',      price:80},
-  {name:'Americano',  price:70},
-  {name:'Cappuccino', price:90},
-  {name:'Espresso',   price:60}
-]
-
 function showUser(req, res) {
 	if (req.query.code == '7736518F427') {
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
 				db.collection("user").find().toArray(
 					(e, data) => {
-						res.render('show-user', {user: data})
+						res.render('show-user.html', {user: data})
 					}
 				)
 			}	
 		)
 	} else {
-		res.render('show-user', {user: [] })
+		res.render('show-user.html', {user: [] })
 	}
 }
 
@@ -112,12 +102,12 @@ function profile(req, res) {
 	if (tokens[token] == null) {
 		res.redirect('/login')
 	} else {
-		res.render('profile', { user:tokens[token] } )
+		res.render('profile.html', { user:tokens[token] } )
 	}
 }
 
 function login(req, res) {
-	res.render('login')
+	res.render('login.html')
 }
 
 function loginMember(req, res) {
@@ -132,7 +122,7 @@ function loginMember(req, res) {
 						var token = uuid.v4()
 						tokens[token] = data[0]
 						res.set('Set-Cookie', 'token=' + token)
-						res.redirect('/profile')
+						res.redirect('/profile.html')
 					} else {
 						res.redirect('/login?error=Invalid Email or Password')
 					}
