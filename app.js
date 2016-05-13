@@ -3,6 +3,7 @@ var express = require('express')
 var app     = express()
 var parser  = require('body-parser')
 var mongo   = require('mongodb').MongoClient
+var uuid    = require('node-uuid')
 
 app.use(express.static('public'))
 app.use(parser.urlencoded({extended:false}))
@@ -119,7 +120,8 @@ function loginMember(req, res) {
 			.find({email:email, password:password}).toArray(
 				(e, data) => {
 					if (data.length == 1) {
-						console.log("Log In Successfully")
+						var token = uuid.v4()
+						tokens[token] = data[0]
 						res.redirect('/')
 					} else {
 						res.redirect('/login?error=Invalid Email or Password')
