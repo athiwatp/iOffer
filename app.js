@@ -111,5 +111,21 @@ function login(req, res) {
 }
 
 function loginMember(req, res) {
-	
+	var email = req.body.email
+	var password = encrypt(req.body.password)
+	mongo.connect("mongodb://127.0.0.1/ioffer",
+		(e, db) => {
+			db.collection("user")
+			.find({email:email, password:password}).toArray(
+				(e, data) => {
+					if (data.length == 1) {
+						console.log("Log In Successfully")
+						res.redirect('/')
+					} else {
+						res.redirect('/login?error=Invalid Email or Password')
+					}
+				}
+			)
+		}
+	)
 }
