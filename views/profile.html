@@ -1,10 +1,13 @@
 <% include header.html %>
 <div class='container'>
-	<i>Hello <%= user.first_name %> </i>
-
+	Hello 
+		<%= user.first_name %> 
+		<%= user.last_name %>
+		
+	
 
 	<br/>
-	<a href='/logout'>Log Out</a>
+	<a href='/logout' class='btn btn-danger'>Log Out</a>
 </div>
 
 <% include footer.html %>

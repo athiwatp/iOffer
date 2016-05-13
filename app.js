@@ -122,7 +122,7 @@ function loginMember(req, res) {
 						var token = uuid.v4()
 						tokens[token] = data[0]
 						res.set('Set-Cookie', 'token=' + token)
-						res.redirect('/profile.html')
+						res.redirect('/profile')
 					} else {
 						res.redirect('/login?error=Invalid Email or Password')
 					}
