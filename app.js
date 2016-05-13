@@ -99,11 +99,19 @@ function showUser(req, res) {
 
 var tokens = [ ]
 function profile(req, res) {
-	var token = req.headers.Cookie.token
-	if (tokens.indexOf(token) >= 0) {
-		res.render('profile')
-	} else {
+	var token = ''
+	var cookie = req.headers['cookie']
+	var items = cookie.split(';')
+	for (var i = 0; i < items.length; i++) {
+		var fields = items[i].split('=')
+		if (fields[0] == 'token') {
+			token = fields[1]
+		}
+	}
+	if (tokens[token] == null) {
 		res.redirect('/login')
+	} else {
+		res.render('profile', { user:tokens[token] } )
 	}
 }
 
@@ -123,7 +131,7 @@ function loginMember(req, res) {
 						var token = uuid.v4()
 						tokens[token] = data[0]
 						res.set('Set-Cookie', 'token=' + token)
-						res.redirect('/')
+						res.redirect('/profile')
 					} else {
 						res.redirect('/login?error=Invalid Email or Password')
 					}
