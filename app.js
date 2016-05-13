@@ -8,13 +8,14 @@ app.use(express.static('public'))
 app.use(parser.urlencoded({extended:false}))
 
 app.set('view engine', 'ejs')
-app.get("/", home)
-app.get ("/register", register)
-app.post("/register", registerMember)
-app.get('/list', list)
-app.get('/list-user', listUser)
-app.get('/show-user', showUser)
-app.get('/profile', profile)
+app.get ('/', home)
+app.get ('/register', register)
+app.post('/register', registerMember)
+app.get ('/login', login)
+app.get ('/list', list)
+app.get ('/list-user', listUser)
+app.get ('/show-user', showUser)
+app.get ('/profile', profile)
 app.listen(2000)
 
 function home(req, res) {
@@ -94,6 +95,16 @@ function showUser(req, res) {
 	}
 }
 
+var tokens = [ ]
 function profile(req, res) {
-	
+	var token = req.headers.Cookie.token
+	if (tokens.indexOf(token) >= 0) {
+		res.render('profile')
+	} else {
+		res.redirect('/login')
+	}
+}
+
+function login(req, res) {
+	res.render('login')
 }
