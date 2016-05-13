@@ -14,6 +14,7 @@ app.get ('/register', register)
 app.post('/register', registerMember)
 app.get ('/login', login)
 app.post('/login', loginMember)
+app.get ('/logout', logout)
 app.get ('/list', list)
 app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
@@ -139,4 +140,18 @@ function loginMember(req, res) {
 			)
 		}
 	)
+}
+
+function logout(req, res) {
+	var token = ''
+	var cookie = req.headers['cookie']
+	var items = cookie.split(';')
+	for (var i = 0; i < items.length; i++) {
+		var fields = items[i].split('=')
+		if (fields[0] == 'token') {
+			token = fields[1]
+		}
+	}
+	delete tokens[token]
+	res.redirect('/')
 }
