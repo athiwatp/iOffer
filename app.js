@@ -12,6 +12,7 @@ app.get ('/', home)
 app.get ('/register', register)
 app.post('/register', registerMember)
 app.get ('/login', login)
+app.post('/login', loginMember)
 app.get ('/list', list)
 app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
@@ -107,4 +108,8 @@ function profile(req, res) {
 
 function login(req, res) {
 	res.render('login')
+}
+
+function loginMember(req, res) {
+	
 }
