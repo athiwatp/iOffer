@@ -179,9 +179,19 @@ function savePost(req, res) {
 		var name = req.body.name || ''
 		var description = req.body.description || ''
 		var phone = req.body.phone || ''
-		var time = 
+		var time = getTime()
 		
-				
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection('post').insert({
+					name: name,
+					description: description,
+					phone: phone,
+					time: time
+				})
+			}
+		)
+		res.redirect('/profile')
 	} else {
 		res.redirect('/login')
 	}
