@@ -1,12 +1,30 @@
 <% include header.html %>
 
+<style>
+	.item {
+		border: 2px solid lightpink;
+		border-radius: 4px;
+		padding: 10px;
+		margin: 10px;
+	}
+</style>
+
 <div class='container'>
 	<h1>Welcome to iOffer</h1>
 	<a href='/login' class='btn btn-primary'>Log In</a>
 	<a href='/register' class='btn btn-default'>Register</a>
 
-	<%= data[0].name %>
-
+	<div class='row'>
+		<% for (var i = 0; i < data.length; i++) { %>
+		<div class='col-xs-12 col-sm-6 col-md-4 col-lg-3'>
+			<div class='item'>
+				<b><%= data[i].name %></b><br>
+				<i><%= data[i].description %></i><br>
+				<p><%= data[i].phone %></p><br>
+			</div>
+		</div>
+		<% } %>
+	</div>
 </div>
 
 
