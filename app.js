@@ -20,7 +20,8 @@ app.get ('/logout', logout)
 app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
 app.get ('/profile', profile)
-app.get('/new', newPost)
+app.get ('/new', newPost)
+app.post('/new', savePost)
 app.listen(2000)
 
 function home(req, res) {
@@ -169,6 +170,44 @@ function newPost(req, res) {
 	if (isLoggedIn(req)) {
 		res.render('new.html')
 	} else {
-		res.redirect("/login")
+		res.redirect('/login')
 	}
 }
+
+function savePost(req, res) {
+	if (isLoggedIn(req)) {
+		var name = req.body.name || ''
+		var description = req.body.description || ''
+		var phone = req.body.phone || ''
+		var time = 
+		
+				
+	} else {
+		res.redirect('/login')
+	}
+}
+
+// return ISO 8601 time format 2016-05-16T07:57:23+00:00
+function getTime() {
+	var t = new Date()
+	var m = t.getUTCMonth() + 1
+	if (m < 10) m = '0' + m
+	var h = t.getUTCHours()
+	if (h < 10) h = '0' + h
+	var n = t.getUTCMinutes()
+	if (n < 10) n = '0' + n
+	var s = t.getUTCSeconds()
+	if (s < 10) s = '0' + s
+	return t.getUTCFullYear() + '-' +
+		m + '-' +
+		t.getUTCDate() + 'T' +
+		h + ':' + n + ':' + s + '+00:00'
+}
+
+
+
+
+
+
+
+//

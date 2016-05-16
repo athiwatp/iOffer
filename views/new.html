@@ -1,7 +1,22 @@
 <% include header.html %>
-
+<style>
+	form > * {
+		margin-bottom: 10px;
+	}
+</style>
 <div class='container'>
-    <h1>New Post</h1>
+	<h1>New Item</h1>
+	<form method='post'>
+		<input class='form-control' name='name'
+			placeholder='Product Name'
+			autofocus >
+		<textarea name='description' class='form-control'
+		placeholder='Product Description'
+		></textarea>
+		<input class='form-control' name='phone'
+			placeholder='Phone Number' >
+		<button class='btn btn-primary'>Post</button>
+	</form>
     
 </div>
 
