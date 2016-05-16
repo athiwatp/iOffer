@@ -25,7 +25,18 @@ app.post('/new', savePost)
 app.listen(2000)
 
 function home(req, res) {
-	res.render("index.html")
+	mongo.connect('mongodb://127.0.0.1/ioffer',
+		(e, db) => {
+			if (e == null) {
+				db.collection('post').find().toArray(
+					(e, data) => 
+						res.render('index.html', {data: data})
+				)
+			} else {
+				res.render('index.html', {data:[]})
+			}
+		}
+	)
 }
 
 function register(req, res) {
