@@ -8,6 +8,7 @@ var ejs     = require('ejs')
 
 app.use(express.static('public'))
 app.use(parser.urlencoded({extended:false}))
+app.use(ExtractToken)
 
 // app.set('view engine', 'ejs')
 app.engine('html', ejs.renderFile)
@@ -191,6 +192,7 @@ function savePost(req, res) {
 		var description = req.body.description || ''
 		var phone = req.body.phone || ''
 		var time = getTime()
+		var id = tokens[req.token]._id
 		
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
@@ -198,7 +200,8 @@ function savePost(req, res) {
 					name: name,
 					description: description,
 					phone: phone,
-					time: time
+					time: time,
+					user: id
 				})
 			}
 		)
@@ -225,7 +228,19 @@ function getTime() {
 		h + ':' + n + ':' + s + '+00:00'
 }
 
-
+function ExtractToken(req, res, next) {
+	var token = ''
+	var cookie = req.headers.cookie || ''
+	var items = cookie.split(';')
+	for (var i = 0; i < items.length; i++) {
+		var fields = items[i].split('=')
+		if (fields[0] == 'token') {
+			token = fields[1]
+		}
+	}
+	req.token = token
+	next()
+}
 
 
 
