@@ -20,6 +20,7 @@ app.get ('/logout', logout)
 app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
 app.get ('/profile', profile)
+app.get('/new', newPost)
 app.listen(2000)
 
 function home(req, res) {
@@ -89,20 +90,21 @@ function showUser(req, res) {
 }
 
 var tokens = [ ]
+
 function profile(req, res) {
-	var token = ''
-	var cookie = req.headers['cookie']
-	var items = cookie.split(';')
-	for (var i = 0; i < items.length; i++) {
-		var fields = items[i].split('=')
-		if (fields[0] == 'token') {
-			token = fields[1]
-		}
-	}
-	if (tokens[token] == null) {
-		res.redirect('/login')
+	if (isLoggedIn(req)) {
+		var token = ''
+		var cookie = req.headers['cookie']
+		var items = cookie.split(';')
+		for (var i = 0; i < items.length; i++) {
+			var fields = items[i].split('=')
+			if (fields[0] == 'token') {
+				token = fields[1]
+			}
+		}		
+		res.render('profile.html', {user:tokens[token]})
 	} else {
-		res.render('profile.html', { user:tokens[token] } )
+		res.redirect('/login')
 	}
 }
 
@@ -144,4 +146,29 @@ function logout(req, res) {
 	}
 	delete tokens[token]
 	res.redirect('/')
+}
+
+function isLoggedIn(req) {
+	var token = ''
+	var cookie = req.headers.cookie || ''
+	var items = cookie.split(';')
+	for (var i = 0; i < items.length; i++) {
+		var fields = items[i].split('=')
+		if (fields[0] == 'token') {
+			token = fields[1]
+		}
+	}
+	if (tokens[token] == null) {
+		return false
+	} else {
+		return true
+	}
+}
+
+function newPost(req, res) {
+	if (isLoggedIn(req)) {
+		res.render('new.html')
+	} else {
+		res.redirect("/login")
+	}
 }
