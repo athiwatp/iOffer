@@ -9,6 +9,7 @@ var multer  = require('multer')
 var upload  = multer({dest:'./uploads/'})
 
 app.use(express.static('public'))
+app.use(express.static('uploads'))
 app.use(parser.urlencoded({extended:false}))
 app.use(ExtractToken)
 
@@ -24,7 +25,7 @@ app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
 app.get ('/profile', profile)
 app.get ('/new', newPost)
-app.post('/new', upload.single('photo'), savePost)
+app.post('/new', upload.array('photo', 10), savePost)
 app.listen(2000)
 
 function home(req, res) {
@@ -188,19 +189,24 @@ function newPost(req, res) {
 	}
 }
 
-function savePost(req, res) {
-	console.log(req.file)
-	console.log(req.files)
+var fs = require('fs')
 
+function savePost(req, res) {
 	if (isLoggedIn(req)) {
 		var name = req.body.name || ''
 		var description = req.body.description || ''
 		var phone = req.body.phone || ''
 		var time = getTime()
 		var id = tokens[req.token]._id
-				
-		res.redirect('/profile')
-		return;
+		for (var i = 0; i < req.files.length; i++) {
+			var names = req.files[i].originalname.split('.')
+			var newName = req.files[i].filename + '.' +
+				names[names.length - 1]
+			fs.rename(
+				'./uploads/' + req.files[i].filename,
+				'./uploads/' + newName, 
+				() => {})
+		}
 		
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
