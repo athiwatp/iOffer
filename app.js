@@ -5,6 +5,8 @@ var parser  = require('body-parser')
 var mongo   = require('mongodb').MongoClient
 var uuid    = require('node-uuid')
 var ejs     = require('ejs')
+var multer  = require('multer')
+var upload  = multer({dest:'./uploads/'})
 
 app.use(express.static('public'))
 app.use(parser.urlencoded({extended:false}))
@@ -22,7 +24,7 @@ app.get ('/list-user', listUser)
 app.get ('/show-user', showUser)
 app.get ('/profile', profile)
 app.get ('/new', newPost)
-app.post('/new', savePost)
+app.post('/new', upload.single('photo'), savePost)
 app.listen(2000)
 
 function home(req, res) {
@@ -187,12 +189,18 @@ function newPost(req, res) {
 }
 
 function savePost(req, res) {
+	console.log(req.file)
+	console.log(req.files)
+
 	if (isLoggedIn(req)) {
 		var name = req.body.name || ''
 		var description = req.body.description || ''
 		var phone = req.body.phone || ''
 		var time = getTime()
 		var id = tokens[req.token]._id
+				
+		res.redirect('/profile')
+		return;
 		
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {

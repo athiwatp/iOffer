@@ -6,7 +6,7 @@
 </style>
 <div class='container'>
 	<h1>New Item</h1>
-	<form method='post'>
+	<form method='post' enctype='multipart/form-data'>
 		<input class='form-control' name='name'
 			placeholder='Product Name'
 			autofocus >
@@ -15,6 +15,8 @@
 		></textarea>
 		<input class='form-control' name='phone'
 			placeholder='Phone Number' >
+		<input type='file' name='photo' />
+		
 		<button class='btn btn-primary'>Post</button>
 	</form>
     
