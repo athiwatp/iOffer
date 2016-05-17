@@ -198,6 +198,7 @@ function savePost(req, res) {
 		var phone = req.body.phone || ''
 		var time = getTime()
 		var id = tokens[req.token]._id
+		var photos = []
 		for (var i = 0; i < req.files.length; i++) {
 			var names = req.files[i].originalname.split('.')
 			var newName = req.files[i].filename + '.' +
@@ -206,6 +207,7 @@ function savePost(req, res) {
 				'./uploads/' + req.files[i].filename,
 				'./uploads/' + newName, 
 				() => {})
+			photos.push(newName)
 		}
 		
 		mongo.connect('mongodb://127.0.0.1/ioffer',
@@ -215,7 +217,8 @@ function savePost(req, res) {
 					description: description,
 					phone: phone,
 					time: time,
-					user: id
+					user: id,
+					photos: photos
 				})
 			}
 		)
