@@ -7,6 +7,10 @@
 		padding: 10px;
 		margin: 10px;
 	}
+	img {
+		width: 100%;
+		margin-top: 4px;
+	}
 </style>
 
 <div class='container'>
@@ -21,6 +25,16 @@
 				<b><%= data[i].name %></b><br>
 				<i><%= data[i].description %></i><br>
 				<p><%= data[i].phone %></p><br>
+				<% 
+				if (data[i].photos != null) { 
+					for (var j = 0; j < data[i].photos.length; j++) {
+				%>	
+					<img src='/<%= data[i].photos[j] %>' />
+				<%
+				    }
+				}
+				%>
+				
 			</div>
 		</div>
 		<% } %>
