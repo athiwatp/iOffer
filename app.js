@@ -30,6 +30,7 @@ app.get ('/detail/:id', showDetail)
 app.get ('/offer/:id',  offer)
 app.get ('/offer',      saveOffer)
 app.get ('/list',       list)
+app.get ('/offer-history/:id', showOfferHistory)
 app.listen(2000)
 
 function home(req, res) {
@@ -285,6 +286,42 @@ function list(req, res) {
 	} else {
 		res.redirect('/login')
 	}
+}
+
+function showOfferHistory(req, res) {
+	if (isLoggedIn(req)) {
+		var post = req.params.id
+		var user = tokens[req.token]._id
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection('post')
+				.find({_id: ObjectId(post), user: ObjectId(user)})
+				.toArray(
+					(e, data) => {
+						console.log(data)
+						if (data.length > 0) {
+							db.collection('offer')
+							.find({post_id: post})
+							.toArray(
+								(e, data) => {
+									res.render('offer-history.html', {
+											data: data,
+											user: tokens[req.token]
+										}
+									)
+								}
+							)
+						} else {
+							res.redirect('/profile')
+						}
+					}
+				)
+			}
+		)
+	} else {
+		res.redirect('/login')
+	}
+	
 }
 
 
