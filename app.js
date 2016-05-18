@@ -26,6 +26,7 @@ app.get ('/show-user', showUser)
 app.get ('/profile', profile)
 app.get ('/new', newPost)
 app.post('/new', upload.array('photo', 10), savePost)
+app.get ('/detail/:id', showDetail)
 app.listen(2000)
 
 function home(req, res) {
@@ -235,7 +236,18 @@ function ExtractToken(req, res, next) {
 	next()
 }
 
-
+function showDetail(req, res) {
+	mongo.connect('mongodb://127.0.0.1/ioffer',
+		(e, db) => {
+			db.collection('post').find({_id: req.params.id})
+			.toArray(
+				(e, data) => {
+					res.render('detail.html', {post: data})
+				}
+			)
+		}
+	)
+}
 
 
 
