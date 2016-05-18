@@ -29,6 +29,7 @@ app.get ('/new', newPost)
 app.post('/new', upload.array('photo', 10), savePost)
 app.get ('/detail/:id', showDetail)
 app.get ('/offer/:id',  offer)
+app.get ('/offer',      saveOffer)
 app.listen(2000)
 
 function home(req, res) {
@@ -258,13 +259,33 @@ function offer(req, res) {
 	if (isLoggedIn(req)) {
 		res.render('offer.html',
 			{postId: req.params.id})
-		/*
-		var post_id = req.params.id
-		var user_id = tokens[req.token]._id
+	} else {
+		res.redirect('/login')
+	}
+}
+
+function saveOffer(req, res) {
+	if (isLoggedIn(req)) {
+	
+		var post_id = req.query.post_id
 		var price   = req.query.price
+		var user_id = tokens[req.token]._id
 		var time    = getTime()
 		var status  = 'offered'
-		*/
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection('offer').insert(
+					{
+						post_id: post_id,
+						user_id: user_id,
+						price:   price,
+						time:    time,
+						status:  status
+					}
+				)
+			}
+		)
+		res.redirect('/detail/' + post_id)
 	} else {
 		res.redirect('/login')
 	}
