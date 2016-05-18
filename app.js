@@ -3,6 +3,7 @@ var express = require('express')
 var app     = express()
 var parser  = require('body-parser')
 var mongo   = require('mongodb').MongoClient
+var ObjectId= require('mongodb').ObjectID
 var uuid    = require('node-uuid')
 var ejs     = require('ejs')
 var multer  = require('multer')
@@ -239,10 +240,12 @@ function ExtractToken(req, res, next) {
 function showDetail(req, res) {
 	mongo.connect('mongodb://127.0.0.1/ioffer',
 		(e, db) => {
-			db.collection('post').find({_id: req.params.id})
+			db.collection('post')
+			.find({_id: ObjectId(req.params.id)})
 			.toArray(
 				(e, data) => {
-					res.render('detail.html', {post: data})
+					res.render('detail.html', 
+						{post: data[0]})
 				}
 			)
 		}
