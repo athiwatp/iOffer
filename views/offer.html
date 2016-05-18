@@ -1,0 +1,26 @@
+<% include header.html %>
+
+<style>
+	form > * {
+		margin-bottom: 10px;
+	}
+</style>
+
+<div class='container'>
+	<h1>Offer for item: <%= postId %></h1>
+	<form action='/offer'>
+		<input name='price'
+			placeholder='Price'
+			class='form-control'>
+			
+		<button type='submit'
+			class='btn btn-primary'>
+			Offer
+		</button>
+		<input type='hidden'
+			name='post_id'
+			value='<%= postId %>'>
+	</form>
+</div>
+
+<% include footer.html %>

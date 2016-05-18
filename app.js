@@ -28,6 +28,7 @@ app.get ('/profile', profile)
 app.get ('/new', newPost)
 app.post('/new', upload.array('photo', 10), savePost)
 app.get ('/detail/:id', showDetail)
+app.get ('/offer/:id',  offer)
 app.listen(2000)
 
 function home(req, res) {
@@ -253,6 +254,21 @@ function showDetail(req, res) {
 	)
 }
 
+function offer(req, res) {
+	if (isLoggedIn(req)) {
+		res.render('offer.html',
+			{postId: req.params.id})
+		/*
+		var post_id = req.params.id
+		var user_id = tokens[req.token]._id
+		var price   = req.query.price
+		var time    = getTime()
+		var status  = 'offered'
+		*/
+	} else {
+		res.redirect('/login')
+	}
+}
 
 
 //
