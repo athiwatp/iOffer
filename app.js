@@ -17,19 +17,19 @@ app.use(ExtractToken)
 // app.set('view engine', 'ejs')
 app.engine('html', ejs.renderFile)
 app.get ('/', home)
-app.get ('/register', register)
-app.post('/register', registerMember)
-app.get ('/login', login)
-app.post('/login', loginMember)
-app.get ('/logout', logout)
-app.get ('/list-user', listUser)
-app.get ('/show-user', showUser)
-app.get ('/profile', profile)
-app.get ('/new', newPost)
-app.post('/new', upload.array('photo', 10), savePost)
+app.get ('/register',   register)
+app.post('/register',   registerMember)
+app.get ('/login',      login)
+app.post('/login',      loginMember)
+app.get ('/logout',     logout)
+app.get ('/profile',    profile)
+app.get ('/new',        newPost)
+app.post('/new',        upload.array('photo', 10), 
+                        savePost)
 app.get ('/detail/:id', showDetail)
 app.get ('/offer/:id',  offer)
 app.get ('/offer',      saveOffer)
+app.get ('/list',       list)
 app.listen(2000)
 
 function home(req, res) {
@@ -74,38 +74,6 @@ function registerMember(req, res) {
 
 function encrypt(s) {
 	return crypto.createHash('sha512').update(s).digest('hex')
-}
-
-function listUser(req, res) {
-	if (req.query.code == '7736518F427') {
-		mongo.connect("mongodb://127.0.0.1/ioffer",
-			(e, db) => {
-				db.collection("user").find().toArray(
-					(e, data) => {
-						res.send(data)
-					}
-				)
-			}
-		)
-	} else {
-		res.send( [] )
-	}
-}
-
-function showUser(req, res) {
-	if (req.query.code == '7736518F427') {
-		mongo.connect('mongodb://127.0.0.1/ioffer',
-			(e, db) => {
-				db.collection("user").find().toArray(
-					(e, data) => {
-						res.render('show-user.html', {user: data})
-					}
-				)
-			}	
-		)
-	} else {
-		res.render('show-user.html', {user: [] })
-	}
 }
 
 var tokens = [ ]
@@ -291,6 +259,29 @@ function saveOffer(req, res) {
 			}
 		)
 		res.redirect('/detail/' + post_id)
+	} else {
+		res.redirect('/login')
+	}
+}
+
+function list(req, res) {
+	if (isLoggedIn(req)) {
+		var user = tokens[req.token]._id
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection('post')
+				.find({user: user})
+				.toArray(
+					(e, data) => {
+						res.render('list.html', {
+								data: data,
+								user: tokens[req.token]
+							}
+						)
+					}
+				)
+			}
+		)
 	} else {
 		res.redirect('/login')
 	}
