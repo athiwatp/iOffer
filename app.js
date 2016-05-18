@@ -35,14 +35,11 @@ app.listen(2000)
 function home(req, res) {
 	mongo.connect('mongodb://127.0.0.1/ioffer',
 		(e, db) => {
-			if (e == null) {
-				db.collection('post').find().toArray(
-					(e, data) => 
-						res.render('index.html', {data: data})
-				)
-			} else {
-				res.render('index.html', {data:[]})
-			}
+			db.collection('post').find().toArray(
+				(e, data) => 
+					res.render('index.html', 
+						{ data: data, user: tokens[req.token] })
+			)
 		}
 	)
 }
@@ -61,14 +58,16 @@ function registerMember(req, res) {
 	mongo.connect("mongodb://127.0.0.1/ioffer",
 		(e, db) => {
 			db.collection("user").find({email: user.email})
-			.toArray( (e, data) => {
-				if (data.length > 0) {
-					console.log("Duplicated Email")
-				} else {
-					db.collection("user").insert(user)
+				.toArray( (e, data) => {
+					if (data.length > 0) {
+						console.log("Duplicated Email")
+					} else {
+						db.collection("user").insert(user)
+					}
 				}
-			})
-		})
+			)
+		}
+	)
 	
 	res.redirect('/')
 }
@@ -114,7 +113,7 @@ var tokens = [ ]
 function profile(req, res) {
 	if (isLoggedIn(req)) {
 		var token = req.token
-		res.render('profile.html', {user:tokens[token]})
+		res.render('profile.html', { user: tokens[token] } )
 	} else {
 		res.redirect('/login')
 	}
@@ -163,7 +162,7 @@ function isLoggedIn(req) {
 
 function newPost(req, res) {
 	if (isLoggedIn(req)) {
-		res.render('new.html')
+		res.render('new.html', { user: tokens[req.token] })
 	} else {
 		res.redirect('/login')
 	}
@@ -247,8 +246,11 @@ function showDetail(req, res) {
 			.toArray(
 				(e, data) => {
 					console.log(data[0])
-					res.render('detail.html', 
-						{post: data[0]})
+					res.render('detail.html', { 
+							post: data[0], 
+							user: tokens[req.token]
+						}
+					)
 				}
 			)
 		}
@@ -257,8 +259,11 @@ function showDetail(req, res) {
 
 function offer(req, res) {
 	if (isLoggedIn(req)) {
-		res.render('offer.html',
-			{postId: req.params.id})
+		res.render('offer.html', {
+				postId: req.params.id,
+				user: tokens[req.token]
+			}
+		)
 	} else {
 		res.redirect('/login')
 	}
@@ -266,12 +271,12 @@ function offer(req, res) {
 
 function saveOffer(req, res) {
 	if (isLoggedIn(req)) {
-	
 		var post_id = req.query.post_id
 		var price   = req.query.price
 		var user_id = tokens[req.token]._id
 		var time    = getTime()
 		var status  = 'offered'
+		
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
 				db.collection('offer').insert(
