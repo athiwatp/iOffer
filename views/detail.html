@@ -1,2 +1,17 @@
+<% include header.html %>
 
-<%= post.name %>
+
+<div class='container'>
+	<br>
+	<a href='/offer/<%= post._id %>'
+		class='btn btn-primary'>Offer</a>
+	<h1><%= post.name %></h1>
+	<p>
+		<%= post.description %>
+	</p>
+	<% for (var i = 0; i < post.photos.length; i++) { %>
+		<img src='/<%= post.photos[i] %>' >
+	<% } %>
+</div>
+
+<% include footer.html %>

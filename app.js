@@ -244,6 +244,7 @@ function showDetail(req, res) {
 			.find({_id: ObjectId(req.params.id)})
 			.toArray(
 				(e, data) => {
+					console.log(data[0])
 					res.render('detail.html', 
 						{post: data[0]})
 				}
