@@ -45,7 +45,7 @@ function home(req, res) {
 }
 
 function register(req, res) {
-	res.render("register.html")
+	res.render("register.html", { user: null })
 }
 
 function registerMember(req, res) {
@@ -120,7 +120,7 @@ function profile(req, res) {
 }
 
 function login(req, res) {
-	res.render('login.html')
+	res.render('login.html', { user: null })
 }
 
 function loginMember(req, res) {
