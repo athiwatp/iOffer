@@ -1,5 +1,30 @@
 <% include header.html %>
 
-<%= data[0].name %>
+
+<div class='container'>
+<table class='table'>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Date</th>
+			<th>Offer History</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (var i = 0; i < data.length; i++) { %>
+		<tr>
+			<td><%= data[i].name %></td>
+			<td><%= data[i].time %></td>
+			<td><a class='btn btn-default'
+			href='/offer-history/<%= data[i]._id %>'>
+			View Offer
+			</a>
+			</td>
+		</tr>
+		<% } %>
+	</tbody>
+	
+</table>
+</div>
 
 <% include footer.html %>
