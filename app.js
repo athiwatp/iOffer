@@ -109,15 +109,7 @@ var tokens = [ ]
 
 function profile(req, res) {
 	if (isLoggedIn(req)) {
-		var token = ''
-		var cookie = req.headers['cookie']
-		var items = cookie.split(';')
-		for (var i = 0; i < items.length; i++) {
-			var fields = items[i].split('=')
-			if (fields[0] == 'token') {
-				token = fields[1]
-			}
-		}		
+		var token = req.token
 		res.render('profile.html', {user:tokens[token]})
 	} else {
 		res.redirect('/login')
@@ -151,29 +143,13 @@ function loginMember(req, res) {
 }
 
 function logout(req, res) {
-	var token = ''
-	var cookie = req.headers['cookie']
-	var items = cookie.split(';')
-	for (var i = 0; i < items.length; i++) {
-		var fields = items[i].split('=')
-		if (fields[0] == 'token') {
-			token = fields[1]
-		}
-	}
+	var token = req.token
 	delete tokens[token]
 	res.redirect('/')
 }
 
 function isLoggedIn(req) {
-	var token = ''
-	var cookie = req.headers.cookie || ''
-	var items = cookie.split(';')
-	for (var i = 0; i < items.length; i++) {
-		var fields = items[i].split('=')
-		if (fields[0] == 'token') {
-			token = fields[1]
-		}
-	}
+	var token = req.token
 	if (tokens[token] == null) {
 		return false
 	} else {
