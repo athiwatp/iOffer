@@ -32,6 +32,8 @@ app.get ('/offer',      saveOffer)
 app.get ('/list',       list)
 app.get ('/offer-history/:id', showOfferHistory)
 app.get ('/decline/:offer_id', decline)
+app.get ('/accept/:offer_id',  accept)
+app.get ('/delete/:post_id',   deletePost)
 app.listen(2000)
 
 function home(req, res) {
@@ -360,4 +362,67 @@ function decline(req, res) {
 			)
 		}
 	)
+}
+
+function accept(req, res) {
+	var offer_id = req.params.offer_id
+	mongo.connect('mongodb://127.0.0.1/ioffer',
+		(e, db) => {
+			db.collection('offer').findOne(
+				{
+					_id: ObjectId(offer_id)
+				}
+			).then(offer => {
+					if (offer == null) {
+						res.redirect('/profile')
+					} else {
+						db.collection('post').findOne(
+							{
+								_id: ObjectId(offer.post_id)
+							}
+						).then(post => {
+								var owner = '' + post.user
+								var current_user = '' + tokens[req.token]._id
+								if (owner == current_user) {
+									var offer0 = {}
+									offer0._id = offer._id
+									offer.status = 'accepted'
+									
+									db.collection('offer')
+									.update(offer0, offer)
+								}
+								res.redirect(
+									'/offer-history/' + post._id)
+							}
+						)
+					}
+				}
+			)
+		}
+	)
+}
+
+function deletePost(req, res) {
+	if (isLoggedIn(req)) {
+		var post_id = req.params.post_id
+		var user_id = tokens[req.token]._id
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				if (e == null) {
+					db.collection('post')
+					.remove({
+						_id:  ObjectId(post_id),
+						user: user_id
+						},
+						(e, r) => res.redirect('/list')
+					)
+				} else {
+					res.redirect('/list')
+				}
+			}
+		)
+	} else {
+		res.redirect('/login')
+	}
+	
 }

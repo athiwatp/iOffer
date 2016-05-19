@@ -20,7 +20,9 @@
 				<td><%= data[i].time    %></td>
 				<td><%= data[i].status  %></td>
 				<td>
-					<a class='btn btn-primary'>Accept</a>
+					<a class='btn btn-primary'
+						href='/accept/<%= data[i]._id %>'
+					>Accept</a>
 					<a class='btn btn-default'
 						href='/decline/<%= data[i]._id %>'
 					>Decline</a>					

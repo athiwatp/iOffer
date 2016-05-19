@@ -15,10 +15,15 @@
 		<tr>
 			<td><%= data[i].name %></td>
 			<td><%= data[i].time %></td>
-			<td><a class='btn btn-default'
-			href='/offer-history/<%= data[i]._id %>'>
-			View Offer
-			</a>
+			<td>
+				<a class='btn btn-default'
+				href='/offer-history/<%= data[i]._id %>'>
+				View Offer
+				</a>
+				<a class='btn btn-danger'
+				href='/delete/<%= data[i]._id %>'>
+				Delete
+				</a>
 			</td>
 		</tr>
 		<% } %>
