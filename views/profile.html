@@ -1,13 +1,26 @@
 <% include header.html %>
 <div class='container'>
+	<h3>
 	Hello 
 		<%= user.first_name %> 
 		<%= user.last_name %>
+	</h3>
+	
+	<hr>
+	
+	<h3>Change Profile Picture</h3>
+	<form action='/save-profile-picture'
+		method='post' enctype='multipart/form-data'>
+		<input type='file' name='photo'
+			class='btn btn-default'>
+		<br>
 		
-		<a href='/new'>New Item</a>
+		<button type='submit'
+			class='btn btn-primary'
+		>Upload</button>
+	</form>
 
-	<br/>
-	<a href='/logout' class='btn btn-danger'>Log Out</a>
+
 </div>
 
 <% include footer.html %>
