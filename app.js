@@ -342,19 +342,17 @@ function decline(req, res) {
 								_id: ObjectId(offer.post_id)
 							}
 						).then(post => {
-								var owner = post.user
-								var cuser = tokens[req.token]._id
-								if (owner == cuser) {
-									console.log('updating ...')
-									var offer0 = { _id: offer._id }
+								var owner = '' + post.user
+								var current_user = '' + tokens[req.token]._id
+								if (owner == current_user) {
+									var offer0 = {}
+									offer0._id = offer._id
 									offer.status = 'declined'
 									
 									db.collection('offer')
 									.update(offer0, offer)
-									res.redirect(req.url)
-								} else {
-									res.redirect('/profile')
 								}
+								res.redirect('/list')
 							}
 						)
 					}
