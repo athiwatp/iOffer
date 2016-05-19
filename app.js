@@ -1,3 +1,4 @@
+var fs      = require('fs')
 var crypto  = require('crypto')
 var express = require('express')
 var app     = express()
@@ -34,6 +35,8 @@ app.get ('/offer-history/:id', showOfferHistory)
 app.get ('/decline/:offer_id', decline)
 app.get ('/accept/:offer_id',  accept)
 app.get ('/delete/:post_id',   deletePost)
+app.post('/save-profile-picture',   upload.single('photo'),
+									saveProfilePicture)
 app.listen(2000)
 
 function home(req, res) {
@@ -139,8 +142,6 @@ function newPost(req, res) {
 		res.redirect('/login')
 	}
 }
-
-var fs = require('fs')
 
 function savePost(req, res) {
 	if (isLoggedIn(req)) {
@@ -432,4 +433,33 @@ function deletePost(req, res) {
 		res.redirect('/login')
 	}
 	
+}
+
+function saveProfilePicture(req, res) {
+	if (isLoggedIn(req)) {
+		var items = req.file.originalname.split('.')
+		var ext   = items[items.length - 1]
+		var name  = req.file.filename + '.' + ext
+		
+		fs.rename(
+			'./uploads/' + req.file.filename, 
+			'./uploads/' + name, 
+			(e, r) => {
+				tokens[req.token].photo = name
+				mongo.connect('mongodb://127.0.0.1/ioffer',
+					(e, db) => {
+						var u = {}
+						u._id = tokens[req.token]._id
+						db.collection('user').update(
+							u, tokens[req.token],
+							(e, r) => res.redirect('/profile')
+						)
+					}
+				)
+			}
+		)
+		
+	} else {
+		res.redirect('/login')
+	}
 }

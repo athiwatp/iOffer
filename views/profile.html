@@ -6,6 +6,9 @@
 		<%= user.last_name %>
 	</h3>
 	
+	<% if (user.photo != null) { %>
+		<img src='/<%= user.photo %>'>
+	<% } %>
 	<hr>
 	
 	<h3>Change Profile Picture</h3>
