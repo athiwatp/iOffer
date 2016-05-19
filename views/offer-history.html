@@ -8,6 +8,8 @@
 				<th>User ID</th>
 				<th>Price</th>
 				<th>Date</th>
+				<th>Status</th>
+				<th>Action</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -16,6 +18,13 @@
 				<td><%= data[i].user_id %></td>
 				<td><%= data[i].price   %></td>
 				<td><%= data[i].time    %></td>
+				<td><%= data[i].status  %></td>
+				<td>
+					<a class='btn btn-primary'>Accept</a>
+					<a class='btn btn-default'
+						href='/decline/<%= data[i]._id %>'
+					>Decline</a>					
+				</td>
 			</tr>
 			<% } %>
 		</tbody>

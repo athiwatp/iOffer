@@ -31,6 +31,7 @@ app.get ('/offer/:id',  offer)
 app.get ('/offer',      saveOffer)
 app.get ('/list',       list)
 app.get ('/offer-history/:id', showOfferHistory)
+app.get ('/decline/:offer_id', decline)
 app.listen(2000)
 
 function home(req, res) {
@@ -298,7 +299,6 @@ function showOfferHistory(req, res) {
 				.find({_id: ObjectId(post), user: ObjectId(user)})
 				.toArray(
 					(e, data) => {
-						console.log(data)
 						if (data.length > 0) {
 							db.collection('offer')
 							.find({post_id: post})
@@ -325,4 +325,41 @@ function showOfferHistory(req, res) {
 }
 
 
-//
+function decline(req, res) {
+	var offer_id = req.params.offer_id
+	mongo.connect('mongodb://127.0.0.1/ioffer',
+		(e, db) => {
+			db.collection('offer').findOne(
+				{
+					_id: ObjectId(offer_id)
+				}
+			).then(offer => {
+					if (offer == null) {
+						res.redirect('/profile')
+					} else {
+						db.collection('post').findOne(
+							{
+								_id: ObjectId(offer.post_id)
+							}
+						).then(post => {
+								var owner = post.user
+								var cuser = tokens[req.token]._id
+								if (owner == cuser) {
+									console.log('updating ...')
+									var offer0 = { _id: offer._id }
+									offer.status = 'declined'
+									
+									db.collection('offer')
+									.update(offer0, offer)
+									res.redirect(req.url)
+								} else {
+									res.redirect('/profile')
+								}
+							}
+						)
+					}
+				}
+			)
+		}	
+	)
+}
