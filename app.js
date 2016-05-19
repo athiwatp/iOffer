@@ -296,10 +296,11 @@ function showOfferHistory(req, res) {
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
 				db.collection('post')
-				.find({_id: ObjectId(post), user: ObjectId(user)})
-				.toArray(
-					(e, data) => {
-						if (data.length > 0) {
+				.findOne({_id: ObjectId(post), user: ObjectId(user)})
+				.then(data => {
+						if (data == null) {
+							res.redirect('/list')
+						} else {
 							db.collection('offer')
 							.find({post_id: post})
 							.toArray(
@@ -311,8 +312,6 @@ function showOfferHistory(req, res) {
 									)
 								}
 							)
-						} else {
-							res.redirect('/profile')
 						}
 					}
 				)
@@ -352,12 +351,13 @@ function decline(req, res) {
 									db.collection('offer')
 									.update(offer0, offer)
 								}
-								res.redirect('/list')
+								res.redirect(
+									'/offer-history/' + post._id)
 							}
 						)
 					}
 				}
 			)
-		}	
+		}
 	)
 }
