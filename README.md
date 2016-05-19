@@ -1,6 +1,23 @@
 # iOffer
 An example from JavaScript Bootcamp.
 
+# Starting MongoDB
+On Windows
+```
+mongod.exe --dbpath . --storageEngine=mmapv1
+```
+
+On Mac OS X
+```
+./mongod --dbpath .
+```
+
+On Linux
+```
+apt-get install mongodb
+```
+
+
 # How to run the app
 Issue the following commands:
 ```
