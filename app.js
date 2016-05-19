@@ -351,10 +351,14 @@ function decline(req, res) {
 									offer.status = 'declined'
 									
 									db.collection('offer')
-									.update(offer0, offer)
+									.update(offer0, offer,
+									(e, r) => res.redirect(
+										'/offer-history/' + post._id)
+									)
+								} else {
+									res.redirect(
+										'/offer-history/' + post._id)
 								}
-								res.redirect(
-									'/offer-history/' + post._id)
 							}
 						)
 					}
@@ -389,11 +393,14 @@ function accept(req, res) {
 									offer.status = 'accepted'
 									
 									db.collection('offer')
-									.update(offer0, offer)
-								}
-								res.redirect(
-									'/offer-history/' + post._id)
-							}
+									.update(offer0, offer,
+									(e, r) => res.redirect(
+										'/offer-history/' + post._id)
+									)
+								} else {
+									res.redirect(
+										'/offer-history/' + post._id)
+								}							}
 						)
 					}
 				}
