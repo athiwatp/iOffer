@@ -46,12 +46,33 @@
 			.then( j => this.process(j) )
 		}
 		render() {
+			let rows = [ ]
+			for (let d of this.data) {
+				rows.push(
+					(<tr>
+						<td>{d.name}</td>
+						<td>{d.description}</td>
+					</tr>)
+				)
+			}
+		
 			return (
-				<i>Data will show here</i>
+				<table className='table'>
+					<thead>
+						<tr>
+							<th>Post</th>
+							<th>Detail</th>
+						</tr>
+					</thead>
+					<tbody>
+						{rows}
+					</tbody>
+				</table>
 			)
 		}
 		process(data) {
 			this.data = data
+			this.setState({})
 			// console.table(data)
 		}
 	}
