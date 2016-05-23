@@ -1,18 +1,46 @@
 <% include header.html %>
 
-<div id='component1'>
+<div id='component1' class='container'>
 	
 </div>
 
 <script type='text/babel'>
+	
+	class Component1 extends React.Component {
+		render() {
+			let c = [
+				{name:'Latte',    price:80},
+				{name:'Mocha',    price:85},
+				{name:'Espresso', price:70},
+				{name:'Cappuccino', price:90},
+				{name:'Ice Tea',  price:80}
+			]
+			let rows = [ ]
+			for (let x of c) {
+				rows.push(<tr><td>{x.name}</td><td>{x.price}</td></tr>)
+			}
+					
+			return (
+				<table className='table'>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						{rows}
+					</tbody>
+				</table>
+			)
+		}
+	}
 
-	ReactDOM.render(<i>Hello React</i>,
+	ReactDOM.render(<Component1 user='James Bond' />,
 		document.getElementById('component1')
 	)
 	
 </script>
-
-
 
 <script src="https://fb.me/react-15.1.0.min.js"></script>
 <script src="https://fb.me/react-dom-15.1.0.min.js"></script>

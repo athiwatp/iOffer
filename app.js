@@ -37,7 +37,9 @@ app.get ('/accept/:offer_id',  accept)
 app.get ('/delete/:post_id',   deletePost)
 app.post('/save-profile-picture',   upload.single('photo'),
 									saveProfilePicture)
-app.get ('/show',      show)									
+app.get ('/show',      show)
+app.get ('/api-list',  apiList)
+
 app.listen(2000)
 
 function home(req, res) {
@@ -467,4 +469,16 @@ function saveProfilePicture(req, res) {
 
 function show(req, res) {
 	res.render('show.html', {user: tokens[req.toke]})
+}
+
+function apiList(req, res) {
+	mongo.connect('mongodb://127.0.0.1/ioffer'
+		(e, db) => {
+			db.collection('post').find().toArray(
+				(e, data) => {
+					res.send(data)
+				}
+			)
+		}
+	)
 }
