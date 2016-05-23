@@ -37,6 +37,7 @@ app.get ('/accept/:offer_id',  accept)
 app.get ('/delete/:post_id',   deletePost)
 app.post('/save-profile-picture',   upload.single('photo'),
 									saveProfilePicture)
+app.get ('/show',      show)									
 app.listen(2000)
 
 function home(req, res) {
@@ -462,4 +463,8 @@ function saveProfilePicture(req, res) {
 	} else {
 		res.redirect('/login')
 	}
+}
+
+function show(req, res) {
+	res.render('show.html', {user: tokens[req.toke]})
 }
