@@ -35,8 +35,28 @@
 			)
 		}
 	}
+	
+	class Show extends React.Component {
+		constructor() {
+			super()
+			this.data = [ ]
+			// $.get('/api-list').success(this.process)
+			fetch('/api-list')
+			.then( r => r.json() )
+			.then( j => this.process(j) )
+		}
+		render() {
+			return (
+				<i>Data will show here</i>
+			)
+		}
+		process(data) {
+			this.data = data
+			// console.table(data)
+		}
+	}
 
-	ReactDOM.render(<Component1 user='James Bond' />,
+	ReactDOM.render(<Show />,
 		document.getElementById('component1')
 	)
 	
