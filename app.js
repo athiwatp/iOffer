@@ -472,7 +472,7 @@ function show(req, res) {
 }
 
 function apiList(req, res) {
-	mongo.connect('mongodb://127.0.0.1/ioffer'
+	mongo.connect('mongodb://127.0.0.1/ioffer',
 		(e, db) => {
 			db.collection('post').find().toArray(
 				(e, data) => {
