@@ -1,4 +1,9 @@
 <% include header.html %>
+<style>
+	img {
+		height: 80px;
+	}
+</style>
 
 <div id='component1' class='container'>
 	
@@ -49,9 +54,16 @@
 			let rows = [ ]
 			for (let d of this.data) {
 				let link = '/detail/' + d._id
+				let photo = ''
+			
+				if (d.photos.length == 0) {
+				} else {
+					photo = <img src={d.photos[0]} />
+				}
 				rows.push(
 					(
 					<tr>
+						<td><a href={link}>{photo}</a></td>
 						<td><a href={link}>{d.name}</a></td>
 						<td><a href={link}>{d.description}</a></td>
 					</tr>
@@ -63,6 +75,7 @@
 				<table className='table'>
 					<thead>
 						<tr>
+							<th>Picture</th>
 							<th>Post</th>
 							<th>Detail</th>
 						</tr>
@@ -76,7 +89,7 @@
 		process(data) {
 			this.data = data
 			this.setState({})
-			// console.table(data)
+			console.table(data)
 		}
 	}
 
