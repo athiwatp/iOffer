@@ -48,11 +48,14 @@
 		render() {
 			let rows = [ ]
 			for (let d of this.data) {
+				let link = '/detail/' + d._id
 				rows.push(
-					(<tr>
-						<td>{d.name}</td>
-						<td>{d.description}</td>
-					</tr>)
+					(
+					<tr>
+						<td><a href={link}>{d.name}</a></td>
+						<td><a href={link}>{d.description}</a></td>
+					</tr>
+					)
 				)
 			}
 		
