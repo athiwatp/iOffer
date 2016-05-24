@@ -492,10 +492,11 @@ function search(req, res) {
 
 function apiSearch(req, res) {
 	var query = req.params.query
+	var rx    = new RegExp(query, 'i')
 	mongo.connect('mongodb://127.0.0.1/ioffer',
 		(e, db) => {
 			if (e == null) {
-				db.collection('post').find({name: /calc/i })
+				db.collection('post').find({name: rx })
 				.toArray(
 					(e, data) => {
 						res.send(data)
