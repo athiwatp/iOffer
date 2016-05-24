@@ -41,6 +41,7 @@ app.get ('/show',      show)
 app.get ('/api-list',  apiList)
 
 app.get ('/search',    search)
+app.get ('/search-result/:query', apiSearch)
 
 app.listen(2000)
 
@@ -487,4 +488,8 @@ function apiList(req, res) {
 
 function search(req, res) {
 	res.render('search.html', {user: tokens[req.token]})
+}
+
+function apiSearch(req, res) {
+	res.send([])
 }
