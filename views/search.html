@@ -9,9 +9,19 @@
 
 class SearchPanel extends React.Component {
 
+	constructor() {
+		super()
+		this.result = [ ]
+	}
+
 	render() {
+		let items = [ ]
+		for (let r of this.result) {
+			items.push(<li>{r.name}</li>)
+		}
 
 		return (
+			<div>
 			<form onSubmit={this.search.bind(this)}>
 				<div className='input-group'>
 					<input id='query' autoFocus
@@ -23,6 +33,8 @@ class SearchPanel extends React.Component {
 					</div>
 				</div>
 			</form>
+			<ol>{items}</ol>
+			</div>
 		)
 	}
 
@@ -30,11 +42,10 @@ class SearchPanel extends React.Component {
 		e.preventDefault()
 		let query = e.target.query.value
 		$.get('/search-result/' + query)
-		.success(this.process)
-	}
-
-	process(data) {
-		console.table(data)
+		.success(data => {
+			this.result = data
+			this.setState({})
+		})
 	}
 
 }
