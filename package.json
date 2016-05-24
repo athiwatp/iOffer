@@ -11,5 +11,8 @@
 		"multer": "*",
 		"node-uuid": "*"
 	},
-	"devDependencies": {}
+	"devDependencies": {},
+	"scripts": {
+		"start": "node app"
+	}
 }
