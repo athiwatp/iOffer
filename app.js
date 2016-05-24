@@ -25,7 +25,7 @@ app.post('/login',      loginMember)
 app.get ('/logout',     logout)
 app.get ('/profile',    profile)
 app.get ('/new',        newPost)
-app.post('/new',        upload.array('photo', 10), 
+app.post('/new',        upload.array('photo', 10),
                         savePost)
 app.get ('/detail/:id', showDetail)
 app.get ('/offer/:id',  offer)
@@ -40,14 +40,16 @@ app.post('/save-profile-picture',   upload.single('photo'),
 app.get ('/show',      show)
 app.get ('/api-list',  apiList)
 
+app.get ('/search',    search)
+
 app.listen(2000)
 
 function home(req, res) {
 	mongo.connect('mongodb://127.0.0.1/ioffer',
 		(e, db) => {
 			db.collection('post').find().toArray(
-				(e, data) => 
-					res.render('index.html', 
+				(e, data) =>
+					res.render('index.html',
 						{ data: data, user: tokens[req.token] })
 			)
 		}
@@ -64,7 +66,7 @@ function registerMember(req, res) {
 	user.last_name  = req.body['last-name']
 	user.email      = req.body.email
 	user.password   = encrypt(req.body.password)
-	
+
 	mongo.connect("mongodb://127.0.0.1/ioffer",
 		(e, db) => {
 			db.collection("user").find({email: user.email})
@@ -78,7 +80,7 @@ function registerMember(req, res) {
 			)
 		}
 	)
-	
+
 	res.redirect('/')
 }
 
@@ -160,11 +162,11 @@ function savePost(req, res) {
 				names[names.length - 1]
 			fs.rename(
 				'./uploads/' + req.files[i].filename,
-				'./uploads/' + newName, 
+				'./uploads/' + newName,
 				() => {})
 			photos.push(newName)
 		}
-		
+
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
 				db.collection('post').insert({
@@ -222,8 +224,8 @@ function showDetail(req, res) {
 			.toArray(
 				(e, data) => {
 					console.log(data[0])
-					res.render('detail.html', { 
-							post: data[0], 
+					res.render('detail.html', {
+							post: data[0],
 							user: tokens[req.token]
 						}
 					)
@@ -252,7 +254,7 @@ function saveOffer(req, res) {
 		var user_id = tokens[req.token]._id
 		var time    = getTime()
 		var status  = 'offered'
-		
+
 		mongo.connect('mongodb://127.0.0.1/ioffer',
 			(e, db) => {
 				db.collection('offer').insert(
@@ -326,7 +328,7 @@ function showOfferHistory(req, res) {
 	} else {
 		res.redirect('/login')
 	}
-	
+
 }
 
 
@@ -353,7 +355,7 @@ function decline(req, res) {
 									var offer0 = {}
 									offer0._id = offer._id
 									offer.status = 'declined'
-									
+
 									db.collection('offer')
 									.update(offer0, offer,
 									(e, r) => res.redirect(
@@ -395,7 +397,7 @@ function accept(req, res) {
 									var offer0 = {}
 									offer0._id = offer._id
 									offer.status = 'accepted'
-									
+
 									db.collection('offer')
 									.update(offer0, offer,
 									(e, r) => res.redirect(
@@ -435,7 +437,7 @@ function deletePost(req, res) {
 	} else {
 		res.redirect('/login')
 	}
-	
+
 }
 
 function saveProfilePicture(req, res) {
@@ -443,10 +445,10 @@ function saveProfilePicture(req, res) {
 		var items = req.file.originalname.split('.')
 		var ext   = items[items.length - 1]
 		var name  = req.file.filename + '.' + ext
-		
+
 		fs.rename(
-			'./uploads/' + req.file.filename, 
-			'./uploads/' + name, 
+			'./uploads/' + req.file.filename,
+			'./uploads/' + name,
 			(e, r) => {
 				tokens[req.token].photo = name
 				mongo.connect('mongodb://127.0.0.1/ioffer',
@@ -461,14 +463,14 @@ function saveProfilePicture(req, res) {
 				)
 			}
 		)
-		
+
 	} else {
 		res.redirect('/login')
 	}
 }
 
 function show(req, res) {
-	res.render('show.html', {user: tokens[req.toke]})
+	res.render('show.html', {user: tokens[req.token]})
 }
 
 function apiList(req, res) {
@@ -481,4 +483,8 @@ function apiList(req, res) {
 			)
 		}
 	)
+}
+
+function search(req, res) {
+	res.render('search.html', {user: tokens[req.token]})
 }
