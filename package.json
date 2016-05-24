@@ -1,0 +1,15 @@
+{
+	"name": "iOffer",
+	"version": "0.5.0",
+	"description": "Demo of iOffer",
+	"main": "app.js",
+	"dependencies": {
+		"body-parser": "*",
+		"ejs": "*",
+		"express": "*",
+		"mongodb": "*",
+		"multer": "*",
+		"node-uuid": "*"
+	},
+	"devDependencies": {}
+}
