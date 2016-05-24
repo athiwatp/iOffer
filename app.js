@@ -491,5 +491,32 @@ function search(req, res) {
 }
 
 function apiSearch(req, res) {
-	res.send([])
+	var query = req.params.query
+	mongo.connect('mongodb://127.0.0.1/ioffer',
+		(e, db) => {
+			if (e == null) {
+				db.collection('post').find({name: /calc/i })
+				.toArray(
+					(e, data) => {
+						res.send(data)
+					}
+				)
+			} else {
+				res.send([])
+			}
+		}
+	)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//
