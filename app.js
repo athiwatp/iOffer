@@ -218,22 +218,27 @@ function ExtractToken(req, res, next) {
 }
 
 function showDetail(req, res) {
-	mongo.connect('mongodb://127.0.0.1/ioffer',
-		(e, db) => {
-			db.collection('post')
-			.find({_id: ObjectId(req.params.id)})
-			.toArray(
-				(e, data) => {
-					console.log(data[0])
-					res.render('detail.html', {
-							post: data[0],
-							user: tokens[req.token]
-						}
-					)
-				}
-			)
-		}
-	)
+	if (req.params.id == null) {
+		res.redirect('/')
+	} else {
+		let id = ObjectId(req.params.id)
+		mongo.connect('mongodb://127.0.0.1/ioffer',
+			(e, db) => {
+				db.collection('post')
+				// .find({_id: ObjectId(req.params.id)})
+				.find({_id: id})
+				.toArray(
+					(e, data) => {
+						res.render('detail.html', {
+								post: data[0],
+								user: tokens[req.token]
+							}
+						)
+					}
+				)
+			}
+		)
+	}
 }
 
 function offer(req, res) {
