@@ -2,7 +2,7 @@
 
 <style>
 	.item {
-		border: 2px solid lightpink;
+		border: 2px solid lightblue;
 		border-radius: 4px;
 		padding: 10px;
 		margin: 10px;
@@ -15,8 +15,9 @@
 
 <div class='container'>
 	<h1>Welcome to iOffer</h1>
-	<a href='/login' class='btn btn-primary'>Log In</a>
-	<a href='/register' class='btn btn-default'>Register</a>
+
+	<div id='search-panel'></div>
+	<script type='text/babel' src='/search-panel.js'></script>
 
 	<div class='row'>
 		<% for (var i = 0; i < data.length; i++) { %>
@@ -26,10 +27,10 @@
 					<b><%= data[i].name %></b><br>
 					<i><%= data[i].description %></i><br>
 					<p><%= data[i].phone %></p><br>
-					<% 
-					if (data[i].photos != null) { 
+					<%
+					if (data[i].photos != null) {
 						for (var j = 0; j < data[i].photos.length; j++) {
-					%>	
+					%>
 						<img src='/<%= data[i].photos[j] %>' />
 					<%
 						}
