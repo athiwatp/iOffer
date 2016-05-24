@@ -17,12 +17,19 @@ class SearchPanel extends React.Component {
 	render() {
 		let items = [ ]
 		for (let r of this.result) {
+			let link = '/detail/' + r._id
 			items.push(
 				(
-					<tr>
-						<td>{r.name}</td>
-						<td>{r.description}</td>
-					</tr>
+				<tr>
+					<td>
+						<a href={link}>
+							<img style={{height:40}}
+								src={r.photos[0]} />
+						</a>
+					</td>
+					<td><a href={link}>{r.name}</a></td>
+					<td><a href={link}>{r.description}</a></td>
+				</tr>
 				)
 			)
 		}
@@ -33,6 +40,7 @@ class SearchPanel extends React.Component {
 				<table className='table'>
 					<thead>
 						<tr>
+							<th>Photo</th>
 							<th>Name</th>
 							<th>Description</th>
 						</tr>
