@@ -17,7 +17,31 @@ class SearchPanel extends React.Component {
 	render() {
 		let items = [ ]
 		for (let r of this.result) {
-			items.push(<li>{r.name}</li>)
+			items.push(
+				(
+					<tr>
+						<td>{r.name}</td>
+						<td>{r.description}</td>
+					</tr>
+				)
+			)
+		}
+
+		let table = ''
+		if (this.result.length > 0) {
+			table = (
+				<table className='table'>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						{items}
+					</tbody>
+				</table>
+			)
 		}
 
 		return (
@@ -33,7 +57,7 @@ class SearchPanel extends React.Component {
 					</div>
 				</div>
 			</form>
-			<ol>{items}</ol>
+			{table}
 			</div>
 		)
 	}
