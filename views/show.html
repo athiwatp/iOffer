@@ -1,4 +1,87 @@
 <% include header.html %>
+
+<div id='divider2' class='container'></div>
+
+
+<script type='text/babel'>
+
+class Divider2 extends React.Component {
+
+	constructor() {
+		super()
+		this.result = []
+	}
+
+	render() {
+		let items = []
+		for (let i = 0; i < this.result.length; i++) {
+			items.push(<li>{this.result[i]}</li>)
+		}
+		return (
+			<div>
+			<form onSubmit={this.search.bind(this)}>
+				<input className='form-control'
+					id='query'
+					placeholder='Search'
+				/>
+				<button className='btn btn-primary'
+					type='submit'
+					>Search</button>
+			</form>
+			<ul>{items}</ul>
+			</div>
+		)
+	}
+
+	search(f) {
+		f.preventDefault()
+		let n = parseInt(f.target.query.value)
+		this.result = []
+		for (let i = 1; i <= n; i++) {
+			if (n % i == 0) {
+				this.result.push(i)
+			}
+		}
+		this.setState({})
+	}
+
+}
+
+ReactDOM.render(<Divider2 />,
+	document.getElementById("divider2"))
+</script>
+
+
+
+<script type='text/babel'>
+
+	class Divider extends React.Component {
+		render() {
+			let result = []
+			let n = parseInt(this.props.number)
+			for (var i = 1; i <= n; i++) {
+				if (n % i == 0) {
+					result.push(<li>{i}</li>)
+				}
+			}
+			return (
+				<div>
+					<i>Dividers of {this.props.number} are as follow:</i>
+					<ul>
+					{result}
+					</ul>
+				</div>
+			)
+		}
+	}
+
+	ReactDOM.render(<Divider number='115' />,
+		document.querySelector('#app1'))
+
+</script>
+
+
+
 <style>
 	img {
 		height: 80px;
@@ -6,11 +89,11 @@
 </style>
 
 <div id='component1' class='container'>
-	
+
 </div>
 
 <script type='text/babel'>
-	
+
 	class Component1 extends React.Component {
 		render() {
 			let c = [
@@ -24,7 +107,7 @@
 			for (let x of c) {
 				rows.push(<tr><td>{x.name}</td><td>{x.price}</td></tr>)
 			}
-					
+
 			return (
 				<table className='table'>
 					<thead>
@@ -40,7 +123,7 @@
 			)
 		}
 	}
-	
+
 	class Show extends React.Component {
 		constructor() {
 			super()
@@ -55,7 +138,7 @@
 			for (let d of this.data) {
 				let link = '/detail/' + d._id
 				let photo = ''
-			
+
 				if (d.photos.length == 0) {
 				} else {
 					photo = <img src={d.photos[0]} />
@@ -70,7 +153,7 @@
 					)
 				)
 			}
-		
+
 			return (
 				<table className='table'>
 					<thead>
@@ -96,7 +179,7 @@
 	ReactDOM.render(<Show />,
 		document.getElementById('component1')
 	)
-	
+
 </script>
 
 <script src="https://fb.me/react-15.1.0.min.js"></script>
