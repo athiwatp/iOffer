@@ -1,8 +1,9 @@
-import React, {AppRegistry, Component, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {AppRegistry, Component, Image, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 class App extends React.Component {
   constructor() {
     super()
+    this.baseURL = 'http://ioffer.space:2000/'
     this.data = [ ]
     this.query = ''
   }
@@ -37,14 +38,17 @@ class App extends React.Component {
     }
     let items = [ ]
     for (let r of this.data) {
-      let img = { uri: 'http://ioffer.space:2000/' + r.photos[0] }
+      let img = { uri: this.baseURL + r.photos[0] }
+      let url = this.baseURL + 'detail/' + r._id
       items.push(
-        ( 
+        (
         <View style={itemStyle}>
-          <Image style={{width:24, height:24}}
-          source={img} />
-          <Text style='nameStyle'>{r.name}</Text>
-          <Text>{r.description}</Text>
+          <TouchableOpacity onPress={this.openLink.bind(this, url)}>
+            <Image style={{width:24, height:24}}
+            source={img} />
+            <Text style='nameStyle'>{r.name}</Text>
+            <Text>{r.description}</Text>
+          </TouchableOpacity>
         </View>
         )
       )
@@ -74,7 +78,7 @@ class App extends React.Component {
   
   search() {
     let query = this.query
-    let url = 'http://ioffer.space:2000/search-result/'
+    let url = this.baseURL + 'search-result/'
     fetch(url + query)
     .then( r => r.json() )
     .then( d => {
@@ -82,6 +86,10 @@ class App extends React.Component {
         this.setState({})
       }
     )
+  }
+
+  openLink(url) {
+    Linking.openURL(url)
   }
 }
 
