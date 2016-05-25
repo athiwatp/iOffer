@@ -4,6 +4,7 @@ class App extends React.Component {
   constructor() {
     super()
     this.data = [ ]
+    this.query = ''
   }
 
   render() {
@@ -32,7 +33,8 @@ class App extends React.Component {
     }
     return (
       <View style={appStyle}>
-        <TextInput style={inputStyle}></TextInput>
+        <TextInput style={inputStyle} 
+          onChangeText={this.typing.bind(this)}></TextInput>
         <TouchableOpacity style={buttonStyle}
           onPress={this.search.bind(this)}>
           <Text style={buttonTextStyle}
@@ -46,8 +48,12 @@ class App extends React.Component {
     )
   }
   
+  typing(x) {
+    this.query = x
+  }
+  
   search() {
-    let query = 'หนังสือ'
+    let query = this.query
     let url = 'http://ioffer.space:2000/search-result/'
     fetch(url + query)
     .then( r => r.json() )
