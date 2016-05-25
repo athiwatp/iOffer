@@ -1,4 +1,4 @@
-import React from 'react-native'
+import React, {AppRegistry, Component, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 class App extends React.Component {
   constructor() {
@@ -16,18 +16,18 @@ class App extends React.Component {
   render() {
     let items = [ ]
     for (let r of this.data) {
-      items.push(<React.Text>{r.name}</React.Text>)
+      items.push(<Text>{r.name}</Text>)
     }
     return (
-      <React.View>
-        <React.Text>
+      <View>
+        <Text>
         Welcome to React Native, the easiest way to write application for iOS and Android.
         {items}
-        </React.Text>
-      </React.View>
+        </Text>
+      </View>
     )
   }
 }
 
-React.AppRegistry.registerComponent
+AppRegistry.registerComponent
 ('SampleApp', () => App)
