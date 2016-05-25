@@ -1,4 +1,4 @@
-import React, {AppRegistry, Component, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {AppRegistry, Component, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 class App extends React.Component {
   constructor() {
@@ -27,9 +27,27 @@ class App extends React.Component {
     let buttonTextStyle = {
       textAlign: 'center' 
     }
+    let nameStyle = {
+      fontWeight:'bold'
+    }
+    let itemStyle = {
+      borderWidth: 1,
+      borderColor: 'lightgray',
+      padding: 4
+    }
     let items = [ ]
     for (let r of this.data) {
-      items.push(<Text>{r.name}</Text>)
+      let img = { uri: 'http://ioffer.space:2000/' + r.photos[0] }
+      items.push(
+        ( 
+        <View style={itemStyle}>
+          <Image style={{width:24, height:24}}
+          source={img} />
+          <Text style='nameStyle'>{r.name}</Text>
+          <Text>{r.description}</Text>
+        </View>
+        )
+      )
     }
     return (
       <View style={appStyle}>
@@ -42,8 +60,10 @@ class App extends React.Component {
         </TouchableOpacity>
         <Text>
         Welcome to React Native, the easiest way to write application for iOS and Android.
-        {items}
         </Text>
+        <ScrollView>
+        {items}
+        </ScrollView>
       </View>
     )
   }
