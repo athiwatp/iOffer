@@ -108,4 +108,4 @@ class App extends React.Component {
 }
 
 AppRegistry.registerComponent
-('App', () => App)
+('SampleApp', () => App)
