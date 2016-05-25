@@ -13,7 +13,7 @@ class App extends React.Component {
       paddingTop: 30
     }
     let inputStyle = {
-      height: 30,
+      height: 50,
       borderWidth: 1,
       borderColor: 'lightgray'
     }
@@ -29,12 +29,15 @@ class App extends React.Component {
       textAlign: 'center' 
     }
     let nameStyle = {
-      fontWeight:'bold'
+      fontWeight: 800
     }
     let itemStyle = {
       borderWidth: 1,
       borderColor: 'lightgray',
       padding: 4
+    }
+    if (React.Platform.OS == 'ios') {
+      inputStyle.height = 30
     }
     let items = [ ]
     for (let r of this.data) {
@@ -42,7 +45,7 @@ class App extends React.Component {
       let url = this.baseURL + 'detail/' + r._id
       items.push(
         (
-        <View style={itemStyle}>
+        <View style={itemStyle} key={r._id}>
           <TouchableOpacity onPress={this.openLink.bind(this, url)}>
             <Image style={{width:24, height:24}}
             source={img} />
