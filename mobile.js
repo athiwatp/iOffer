@@ -4,13 +4,6 @@ class App extends React.Component {
   constructor() {
     super()
     this.data = [ ]
-    fetch('http://ioffer.space:2000/search-result/หนังสือ')
-    .then( r => r.json() )
-    .then( d => {
-        this.data = d
-        this.setState({})
-      }
-    )
   }
 
   render() {
@@ -40,14 +33,28 @@ class App extends React.Component {
     return (
       <View style={appStyle}>
         <TextInput style={inputStyle}></TextInput>
-        <TouchableOpacity style={buttonStyle}>
-          <Text style={buttonTextStyle}>Search</Text>         
+        <TouchableOpacity style={buttonStyle}
+          onPress={this.search.bind(this)}>
+          <Text style={buttonTextStyle}
+                 >Search</Text>         
         </TouchableOpacity>
         <Text>
         Welcome to React Native, the easiest way to write application for iOS and Android.
         {items}
         </Text>
       </View>
+    )
+  }
+  
+  search() {
+    let query = 'หนังสือ'
+    let url = 'http://ioffer.space:2000/search-result/'
+    fetch(url + query)
+    .then( r => r.json() )
+    .then( d => {
+        this.data = d
+        this.setState({})
+      }
     )
   }
 }
