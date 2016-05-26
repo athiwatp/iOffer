@@ -1,0 +1,22 @@
+<% include header.html %>
+
+<div class='container'>
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (var i = 0; i < staff.length; i++) { %>
+            <tr>
+                <td><%= staff[i].name %></td>
+                <td><%= staff[i].gender %></td>
+            </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<% include footer.html %>
