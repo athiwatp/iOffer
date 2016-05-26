@@ -51,6 +51,7 @@ app.get ('/search',    search)
 app.get ('/search-result/:query', apiSearch)
 
 app.get ('/staff',      listStaff)
+app.get ('/show-staff',  showStaff)
 
 app.listen(2000)
 
@@ -530,7 +531,13 @@ function listStaff(req, res) {
 	})
 }
 
-
+function showStaff(req, res) {
+	let database = mysql.createConnection(mysqlConnection)
+	database.query("select * from staff", (e, rows, fields) => {
+		res.render('staff.html', {staff: rows, user: tokens[req.token] })
+	})
+	
+}
 
 
 
