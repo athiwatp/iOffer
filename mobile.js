@@ -1,6 +1,7 @@
-import React, {AppRegistry, Component, Image, Linking, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, {AppRegistry, Component, Image, Linking, ListView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import Dimensions from 'Dimensions'
 
-class App extends React.Component {
+class App extends Component {
 
 constructor() {
 	super()
@@ -10,9 +11,12 @@ constructor() {
 }
 
 render() {
+	let {height, width} = Dimensions.get('window');
+	
 	let appStyle = {
 		padding: 10,
-		paddingTop: 30
+		paddingTop: 30,
+		backgroundColor: '#eee'
 	}
 	let logoStyle = {
 		fontSize: 32,
@@ -41,10 +45,11 @@ render() {
 		fontWeight: 'bold'
 	}
 	let itemStyle = {
-		borderWidth: 1,
-		borderColor: '#ccc',
+		backgroundColor: 'white',
+		borderRadius: 8,
 		padding: 4,
-		height: 200
+		margin: 4,
+		// height: 200
 	}
 	let imageStyle = {
 		width: 48,
@@ -53,7 +58,13 @@ render() {
 	let detailStyle = {
 		left: 60,
 		top: 0,
-		position:'absolute'
+		position:'absolute',
+		width: 280,
+		height: 48,
+		overflow: 'hidden'
+	}
+	let resultStyle = {
+		height: height - 180
 	}
 	if (React.Platform.OS == 'ios') {
 		inputStyle.height = 30
@@ -63,30 +74,33 @@ render() {
 		let img = { uri: this.baseURL + r.photos[0] }
 		let url = this.baseURL + 'detail/' + r._id
 		items.push(
-		(
-		<View style={itemStyle} key={r._id}>
-			<TouchableOpacity onPress={this.openLink.bind(this, url)}>
-			<Image style={imageStyle}
-				source={img} />
-			<View style={detailStyle}>
-				<Text style={nameStyle}>{r.name}</Text>
-				<Text >{r.description}</Text>
+			(
+			<View style={itemStyle} key={r._id}>
+				<TouchableOpacity onPress={this.open.bind(this, url)}>
+				<Image style={imageStyle}
+					source={img} />
+				<View style={detailStyle}>
+					<Text style={nameStyle}>{r.name}</Text>
+					<Text>{r.description}</Text>
+				</View>
+				</TouchableOpacity>
 			</View>
-			</TouchableOpacity>
-		</View>
-		)
+			)
 		)
 	}
 	return (
 		<View style={appStyle}>
 			<Text style={logoStyle}>iOffer.space</Text>
-			<TextInput style={inputStyle}
-				onChangeText={this.typing.bind(this)}></TextInput>
+			<TextInput style={inputStyle} autoFocus
+				placeholder="Keyword: Book, Car, ..."
+				onChangeText={this.typing.bind(this)}
+				onSubmitEditing={this.search.bind(this)}></TextInput>
 			<TouchableOpacity style={buttonStyle}
 				onPress={this.search.bind(this)}>
 				<Text style={buttonTextStyle}>Search</Text>
 			</TouchableOpacity>
-			<ScrollView>
+			
+			<ScrollView style={resultStyle}>
 				{items}
 			</ScrollView>
 		</View>
@@ -109,7 +123,7 @@ search() {
 	)
 }
 
-openLink(url) {
+open(url) {
 	Linking.openURL(url)
 }
 
@@ -117,3 +131,4 @@ openLink(url) {
 
 AppRegistry.registerComponent
 ('SampleApp', () => App)
+
