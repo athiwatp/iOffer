@@ -9,6 +9,13 @@ var uuid    = require('node-uuid')
 var ejs     = require('ejs')
 var multer  = require('multer')
 var upload  = multer({dest:'./uploads/'})
+var mysql   = require('mysql')
+var mysqlConnection = {
+		host: '127.0.0.1',
+		user: 'root',
+		password: '',
+		database: 'coffee_shop'
+	}
 
 app.use(express.static('public'))
 app.use(express.static('uploads'))
@@ -42,6 +49,8 @@ app.get ('/api-list',  apiList)
 
 app.get ('/search',    search)
 app.get ('/search-result/:query', apiSearch)
+
+app.get ('/staff',      listStaff)
 
 app.listen(2000)
 
@@ -514,7 +523,12 @@ function apiSearch(req, res) {
 	)
 }
 
-
+function listStaff(req, res) {
+	var database = mysql.createConnection(mysqlConnection)
+	database.query("select * from staff", (e, rows, fields) => {
+		res.send(rows)
+	})
+}
 
 
 
