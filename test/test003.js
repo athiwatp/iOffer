@@ -1,4 +1,4 @@
-var baseURL = 'http://ioffer.space:2000';
+var baseURL = require('system').args[1];
 var page    = require('webpage').create();
 
 page.open(baseURL + '/login', function() {
@@ -14,6 +14,7 @@ page.open(baseURL + '/login', function() {
 		} else {
 			console.log('Test Case #003: PASSED');
 		}
+		page.render('test003.png');
 		phantom.exit();
 	}, 5000);
 });
