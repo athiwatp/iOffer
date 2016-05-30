@@ -53,6 +53,7 @@ app.get ('/search-result/:query', apiSearch)
 app.get ('/staff',      listStaff)
 app.get ('/show-staff',  showStaff)
 
+app.use (ErrorHandler)
 app.listen(2000)
 
 function home(req, res) {
@@ -539,7 +540,9 @@ function showStaff(req, res) {
 	
 }
 
-
+function ErrorHandler(req, res) {
+	res.status(404).render('error404.html', {user: tokens[req.token]})
+}
 
 
 
