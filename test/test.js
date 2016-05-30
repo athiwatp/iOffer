@@ -5,7 +5,9 @@ var scripts = [
 	"test001.js",
 	"test002.js",
 	"test003.js",
-	"test004.js"
+	"test004.js",
+	"test005.js",
+	"test006.js"
 ]
 
 for (var i = 0; i < scripts.length; i++) {

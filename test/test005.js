@@ -23,7 +23,8 @@ function verify(status) {
 			document.querySelector('[type=submit]').click()
 		})
 	} else if (step == 'fill-in-data') {
-		if (page.url == baseURL) {
+		if (page.url == baseURL ||
+			page.url == baseURL + '/') {
 			console.log('Test Case #005: PASSED');
 		} else {
 			console.log('Test Case #005: FAILED');
