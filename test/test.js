@@ -10,10 +10,13 @@ var scripts = [
 	"test006.js"
 ]
 
-for (var i = 0; i < scripts.length; i++) {
-	exec("phantomjs " + scripts[i] + " " + server,
-		(e1, result, e2) => {
-			console.log(result)
-		}
-	)
+var step = 0
+exec("phantomjs " + scripts[step] + " " + server, showResult)
+
+function showResult(e1, result, e2) {
+	console.log(result)
+	step++
+	if (step < scripts.length) {
+		exec("phantomjs " + scripts[step] + " " + server, showResult)
+	}
 }
