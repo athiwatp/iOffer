@@ -10,7 +10,7 @@ function verify(status) {
 		step = 'fill-in-data'
 		data = page.evaluate(function() {
 			var d         = new Date();
-			var id        = d.getMonth() + d.getDay() + d.getHours()
+			var id        = '' + d.getMonth() + d.getDate() + d.getHours()
 			var firstName = 'Mr'   + id
 			var lastName  = 'Family'
 			var email     = 'user' + id + '@gmail.com'

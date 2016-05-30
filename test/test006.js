@@ -10,7 +10,7 @@ function verify(status) {
 		step = 'submit-login'
 		page.evaluate(function() {
 			var d         = new Date();
-			var id        = d.getMonth() + d.getDay() + d.getHours()
+			var id        = '' + d.getMonth() + d.getDate() + d.getHours()
 			var email     = 'user' + id + '@gmail.com'
 			var password  = 'pass' + id
 			document.querySelector('[name=email]').value = email
